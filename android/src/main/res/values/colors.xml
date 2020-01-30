@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F35F24</color>
+    <color name="colorPrimaryDark">#f38524</color>
+    <color name="colorAccent">#f3db24</color>
+    <color name="ic_push_color_fs">#F35F24</color>
+</resources>

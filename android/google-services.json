@@ -1,0 +1,155 @@
+{
+  "project_info": {
+    "project_number": "166395639842",
+    "firebase_url": "https://flowsensesdk.firebaseio.com",
+    "project_id": "flowsensesdk",
+    "storage_bucket": "flowsensesdk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166395639842:android:8ac359c213cf00fd",
+        "android_client_info": {
+          "package_name": "com.flowsense.flowsense_flutter_plugin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "166395639842-91iom0q2ku97sfc3sig1efg9lqej6o37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV45lcZhz6M0aUv5GyaPtut6CjC6nTS_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "166395639842-n21eihsm9shqar0psace9uno2qd4puhj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "166395639842-0c9riltilr4b48lq127606p94ee7carf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flowsense.fcmios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166395639842:android:48c58b24fbc6dc54",
+        "android_client_info": {
+          "package_name": "com.flowsense.flowsenserct"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "166395639842-91iom0q2ku97sfc3sig1efg9lqej6o37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV45lcZhz6M0aUv5GyaPtut6CjC6nTS_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "166395639842-n21eihsm9shqar0psace9uno2qd4puhj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "166395639842-0c9riltilr4b48lq127606p94ee7carf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flowsense.fcmios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166395639842:android:ba0132e96ed0ea10",
+        "android_client_info": {
+          "package_name": "com.flowsense.flowsensesdk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "166395639842-91iom0q2ku97sfc3sig1efg9lqej6o37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV45lcZhz6M0aUv5GyaPtut6CjC6nTS_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "166395639842-n21eihsm9shqar0psace9uno2qd4puhj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "166395639842-0c9riltilr4b48lq127606p94ee7carf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flowsense.fcmios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166395639842:android:f36173e948059ccb",
+        "android_client_info": {
+          "package_name": "gcm.play.android.samples.com.gcmquickstart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "166395639842-91iom0q2ku97sfc3sig1efg9lqej6o37.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV45lcZhz6M0aUv5GyaPtut6CjC6nTS_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "166395639842-n21eihsm9shqar0psace9uno2qd4puhj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "166395639842-0c9riltilr4b48lq127606p94ee7carf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flowsense.fcmios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

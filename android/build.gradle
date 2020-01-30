@@ -1,0 +1,59 @@
+group 'com.flowsense.flowsense_flutter_plugin'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+	flatDir {
+            dirs 'libs'
+    	}
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled false
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/FlowsenseSDK_4.0.4.0.jar')
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation 'androidx.core:core:1.0.0'
+    implementation 'androidx.preference:preference:1.0.0'
+    implementation 'com.amazonaws:aws-android-sdk-core:2.11.0'
+    implementation 'com.amazonaws:aws-android-sdk-kinesis:2.11.0'
+    implementation 'io.sentry:sentry-android:1.7.2'
+}
+
+apply plugin: 'com.google.gms.google-services'
