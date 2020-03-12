@@ -22,5 +22,6 @@
 +(NSString *) getDeviceID;
 +(void) requestPushToken;
 +(void) isRegisteredForPush;
++(void) monitorApplicationActivity;
 
 @end

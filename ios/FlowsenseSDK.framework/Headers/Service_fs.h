@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 // result is @{@"push_token": "token", @"push_received": <NSDictionary containing payload>, @"push_clicked": <NSDictionary containing payload>}
 +(void) setPushCallback:(void(^)(NSDictionary *result))completionHandler;
 
++(void) setNotificationResponseHandler:(void(^)(UNNotificationResponse *response))completionHandler;
+
 // Open a deeplink with an app URI and, optionally, an Itunes Store link for app installation and the store app ID
 +(void) openDeepLinkWithURI:(NSString *)appURI storeLink:(NSString *)itunesLink storeID:(NSNumber *)appID;
 
