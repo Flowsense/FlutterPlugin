@@ -4,17 +4,20 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-import com.flowsense.flowsensesdk.StartFlowsenseService;
-import com.flowsense.flowsensesdk.StartMonitoringLocation;
-import com.flowsense.flowsensesdk.Network.UpdatePartnerUserId;
-import com.flowsense.flowsensesdk.KeyValues.KeyValuesManager;
 import com.flowsense.flowsensesdk.PushNotification.FlowsensePushService;
+import com.flowsense.flowsensesdk.PushNotification.FlowsenseNotification;
 import com.flowsense.flowsensesdk.PushNotification.PushCallbacks;
 import com.flowsense.flowsensesdk.PushNotification.FCM.FlowsenseHandlePush;
 import com.flowsense.flowsensesdk.InAppEvent.InAppEvent;
+import com.flowsense.flowsensesdk.FlowsenseSDK;
+import com.flowsense.flowsensesdk.AppUsage.MonitorAppUsage;
+import com.flowsense.flowsensesdk.KeyValues.KeyValuesManager;
 
+import android.app.Application;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.util.Log;
@@ -33,12 +36,12 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Date;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
 /** FlowsenseFlutterPlugin */
-public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks {
-  
+public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks, PluginRegistry.RequestPermissionsResultListener {
   /** Plugin registration. */
   private Registrar flutterRegistrar;
   private MethodChannel channel;
@@ -49,15 +52,21 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks 
   private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 122;
 
   public static void registerWith(Registrar registrar) {
+    final MethodChannel methodChannel = new MethodChannel(registrar.messenger(), "FlowsenseSDK");
+    methodChannel.setMethodCallHandler(new FlowsenseFlutterPlugin(registrar.activity(), methodChannel, registrar));
+  }
 
-    FlowsenseFlutterPlugin plugin = new FlowsenseFlutterPlugin();
-    
-    plugin.flutterRegistrar = registrar;
-    
-    plugin.channel = new MethodChannel(registrar.messenger(), "FlowsenseSDK");
-
-    plugin.channel.setMethodCallHandler(plugin);
-
+  public FlowsenseFlutterPlugin(Activity activity, MethodChannel methodChannel, Registrar registrar) {
+    this.flutterRegistrar = registrar;
+    this.channel = methodChannel;
+    this.channel.setMethodCallHandler(this);
+    try {
+      MonitorAppUsage.getInstance(
+              (Application) activity.getApplicationContext());
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e("FlowsenseSDK", e.toString());
+    }
   }
   
   @Override
@@ -96,6 +105,33 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks 
     clickedNotifReceiver();
   }
 
+  private JSONObject flowsenseNotificationToJson(FlowsenseNotification notification) {
+    JSONObject jsonObject = new JSONObject();
+    try {
+        jsonObject.put("is_flowsense", true);
+        jsonObject.put("title", notification.getTitle());
+        jsonObject.put("small_message", notification.getSmallMessage());
+        jsonObject.put("big_message", notification.getBigMessage());
+        jsonObject.put("action", notification.getAction());
+        jsonObject.put("push_image_icon_url", notification.getBigIconURL());
+        jsonObject.put("push_image_url", notification.getBigPictureURL());
+        JSONObject dataObj = new JSONObject();
+        dataObj.put("push_uuid", notification.getPushUUID());
+        dataObj.put("app_uri", notification.getAppURI());
+        dataObj.put("intent_extras", notification.getIntentExtras().toString());
+
+        JSONArray jsonArray = new JSONArray();
+        for (Bundle b : notification.getActionButtons()) {
+            jsonArray.put(bundleToJSON(b));
+        }
+        dataObj.put("actionButtons", jsonArray);
+        jsonObject.put("data", dataObj);
+    } catch (Exception e) {
+        Log.e("FlowsenseSDK", e.getMessage());
+    }
+    return jsonObject;
+}
+
   private JSONObject bundleToJSON(Bundle bundle){
     JSONObject json = new JSONObject();
     Set<String> keys = bundle.keySet();
@@ -120,7 +156,9 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks 
       @Override
       public void onReceive(Context context, Intent intent) {
         try {
-          JSONObject jsonObject = bundleToJSON(intent.getExtras());
+          FlowsenseNotification flowsenseNotification = (FlowsenseNotification)
+                            intent.getSerializableExtra("notification");
+          JSONObject jsonObject = flowsenseNotificationToJson(flowsenseNotification);
           Log.v("FlowsenseSDK", "Received Push Notification");
           c.invokeMethod("FlowsenseSDK#receivedNotification", jsonToWritableMap(jsonObject));
         }
@@ -138,7 +176,9 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks 
       @Override
       public void onReceive(Context context, Intent intent) {
         try {
-          JSONObject jsonObject = bundleToJSON(intent.getExtras());
+          FlowsenseNotification flowsenseNotification = (FlowsenseNotification)
+                            intent.getSerializableExtra("notification");
+          JSONObject jsonObject = flowsenseNotificationToJson(flowsenseNotification);
           Log.v("FlowsenseSDK", "Clicked Push Notification");
           c.invokeMethod("FlowsenseSDK#clickedNotification", jsonToWritableMap(jsonObject));    
         }
@@ -150,24 +190,24 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks 
   }
 
   @Override
-  public void receivedNotification(Bundle map) {
+  public void receivedNotification(FlowsenseNotification notification) {
     Log.v("FlowsenseSDK", "Received Push Notification Callback");  
     final Intent intent = new Intent(FlowsenseFlutterPlugin.RECEIVED_PUSH);
-      intent.putExtras(map);
+      intent.putExtra("notification", notification);
       getApplicationContext().sendBroadcast(intent);
   }
 
   @Override
-  public void clickedNotification(Bundle map) {
+  public void clickedNotification(FlowsenseNotification notification) {
       Log.v("FlowsenseSDK", "Clicked Push Notification Callback");
       final Intent intent = new Intent(FlowsenseFlutterPlugin.CLICKED_PUSH);
-      intent.putExtras(map);
+      intent.putExtra("notification", notification);
       getApplicationContext().sendBroadcast(intent);
   }
 
   private void startFlowsenseService(MethodCall call, Result result) {
     String token = call.argument("authToken");
-    new StartFlowsenseService(token, getApplicationContext());
+    FlowsenseSDK.init(token, getApplicationContext());
     result.success(null);
   }
 
@@ -182,21 +222,34 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks 
   private void requestAuthAndStartLocation(){
     Context context = getApplicationContext();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        if(context.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-          PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(flutterRegistrar.activity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 
-              MY_PERMISSIONS_ACCESS_FINE_LOCATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (context.checkSelfPermission(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                try {
+                  ActivityCompat.requestPermissions(flutterRegistrar.activity(), new String[]{android.Manifest.permission.ACCESS_BACKGROUND_LOCATION, 
+                    android.Manifest.permission.ACCESS_FINE_LOCATION}, 
+                    MY_PERMISSIONS_ACCESS_FINE_LOCATION);                  
+                } catch (Exception e) {
+                    Log.e("FlowsenseSDK", e.getMessage());
+                }
+            }
         }
-    }
-    else {
-        new StartMonitoringLocation(context);
+        else if (context.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {            
+            try {
+              ActivityCompat.requestPermissions(flutterRegistrar.activity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 
+                MY_PERMISSIONS_ACCESS_FINE_LOCATION);
+            } catch (Exception e) {
+                Log.e("FlowsenseSDK", e.getMessage());
+            }
+        }
+    } else {
+        FlowsenseSDK.startMonitoringLocation(context);
     }
   }
 
   private void updatePartnerUserId(MethodCall call, Result result) {
     String userID = call.argument("userID");
-    UpdatePartnerUserId upuid = new UpdatePartnerUserId(getApplicationContext(), userID);
-    upuid.execute();
+    FlowsenseSDK.updatePartnerUserId(userID, getApplicationContext());
     result.success(null);
   }
 
@@ -329,4 +382,16 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks 
     result.success(null);
   }
 
+  @Override
+  public boolean onRequestPermissionsResult(int requestCode, String[] strings, int[] ints) {
+    switch (requestCode) {
+      case MY_PERMISSIONS_ACCESS_FINE_LOCATION: {
+          // If request is cancelled, the result arrays are empty.
+          if (ints.length > 0 && ints[0] == PackageManager.PERMISSION_GRANTED) {
+              FlowsenseSDK.startMonitoringLocation(getApplicationContext());
+          }
+      }
+    }
+    return false;
+  }
 }
