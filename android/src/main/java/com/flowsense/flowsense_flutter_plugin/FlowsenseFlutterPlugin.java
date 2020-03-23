@@ -53,16 +53,16 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
 
   public static void registerWith(Registrar registrar) {
     final MethodChannel methodChannel = new MethodChannel(registrar.messenger(), "FlowsenseSDK");
-    methodChannel.setMethodCallHandler(new FlowsenseFlutterPlugin(registrar.activity(), methodChannel, registrar));
+    methodChannel.setMethodCallHandler(new FlowsenseFlutterPlugin(registrar.context(), methodChannel, registrar));
   }
 
-  public FlowsenseFlutterPlugin(Activity activity, MethodChannel methodChannel, Registrar registrar) {
+  public FlowsenseFlutterPlugin(Context context, MethodChannel methodChannel, Registrar registrar) {
     this.flutterRegistrar = registrar;
     this.channel = methodChannel;
     this.channel.setMethodCallHandler(this);
     try {
       MonitorAppUsage.getInstance(
-              (Application) activity.getApplicationContext());
+              (Application) context.getApplicationContext());
     } catch (Exception e) {
         e.printStackTrace();
         Log.e("FlowsenseSDK", e.toString());
