@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
-#import <SDK/Service_fs.h>
-#import <SDK/LocationTracker.h>
-#import <SDK/BackgroundTaskManager.h>
-#import <SDK/LocationShareModel.h>
+#import <FlowsenseSDK/Service_fs.h>
+#import <FlowsenseSDK/LocationTracker.h>
+#import <FlowsenseSDK/BackgroundTaskManager.h>
+#import <FlowsenseSDK/LocationShareModel.h>
 
 //! Project version number for SDK.
 FOUNDATION_EXPORT double SDKVersionNumber;

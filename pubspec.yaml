@@ -1,6 +1,6 @@
 name: flowsense_flutter_plugin
 description: This is the Flowsense plugin for Flutter. Flowsense provides app owners with a service that better engages their end users.
-version: 0.0.5
+version: 0.0.6
 homepage: https://www.flowsense.com.br
 
 environment:
