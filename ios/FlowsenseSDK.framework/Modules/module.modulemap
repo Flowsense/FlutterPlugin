@@ -1,6 +1,0 @@
-framework module FlowsenseSDK {
-  umbrella header "FlowsenseSDK.h"
-
-  export *
-  module * { export * }
-}
