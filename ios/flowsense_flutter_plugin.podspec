@@ -12,8 +12,8 @@ Pod::Spec.new do |s|
   s.preserve_paths = 'FlowsenseSDK.framework', 'AWSCore.framework', 'AWSKinesis.framework'
   s.xcconfig = { 'OTHER_LDFLAGS' => '-framework FlowsenseSDK -framework AWSCore -framework AWSKinesis' }
   s.vendored_frameworks = 'FlowsenseSDK.framework', 'AWSCore.framework', 'AWSKinesis.framework'
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files = 'Classes/**/*', 'FlowsenseSDK/**/*', 'AWSCore/**/*', 'AWSKinesis/**/*'
+  s.public_header_files = 'Classes/**/*.h', 'FlowsenseSDK/**/*.h', 'AWSCore/**/*.h', 'AWSKinesis/**/*.h'
   s.dependency 'Flutter'
 
   s.ios.deployment_target = '8.0'
