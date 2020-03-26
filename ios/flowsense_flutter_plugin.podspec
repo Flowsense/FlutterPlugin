@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   # s.license          = { :file => '../LICENSE' }
   s.author           = { 'Flowsense' => 'tech@flowsense.com.br' }
   s.source           = { :path => '.' }
-  s.preserve_paths = 'FlowsenseSDK.framework', 'AWSCore.framework', 'AWSKinesis.framework'
+  # s.preserve_paths = 'FlowsenseSDK.framework', 'AWSCore.framework', 'AWSKinesis.framework'
   s.xcconfig = { 'OTHER_LDFLAGS' => '-framework FlowsenseSDK -framework AWSCore -framework AWSKinesis' }
   s.vendored_frameworks = 'FlowsenseSDK.framework', 'AWSCore.framework', 'AWSKinesis.framework'
   s.source_files = 'Classes/**/*' #, 'FlowsenseSDK/**/*', 'AWSCore/**/*', 'AWSKinesis/**/*'
