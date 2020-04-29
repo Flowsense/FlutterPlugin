@@ -81,6 +81,8 @@ For more information on Flowsense push, please refer to [link](https://docs.flow
 
 ### iOS
 
+> Flowsense iOS SDK uses method swizzling by default. You can turn it off by adding to your app's Info.plist the following key: *FlowsenseCallbackSwizzlingEnabled* with a Boolean value of *NO*. Note: by doing so, Flowsense won't be able to collect push analytics
+
 On iOS, it is necessary to ask for push permission in runtime. Do so by requesting the token:
 
 ```
