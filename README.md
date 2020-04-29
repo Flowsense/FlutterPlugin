@@ -48,6 +48,7 @@ FlowsenseFlutterPlugin.shared.startMonitoringLocation();
 > 1. Privacy - Location Always and When In Use Usage Description
 > 2. Privacy - Location Always Usage Description
 > 3. Privacy - Location When In Use Usage Description
+> 
 > Each of these keys must contain the message you wish to present to the user when location is requested.
 
 ## User identifier
@@ -88,6 +89,7 @@ For more information on Flowsense push, please refer to [link](https://docs.flow
 ### iOS
 
 > Flowsense iOS SDK uses method swizzling by default. You can turn it off by adding to your app's Info.plist the following key: *FlowsenseCallbackSwizzlingEnabled* with a Boolean value of *NO*.
+> 
 > Note: by doing so, Flowsense won't be able to collect push analytics
 
 On iOS, it is necessary to ask for push permission in runtime. Do so by requesting the token:
