@@ -48,6 +48,7 @@ FlowsenseFlutterPlugin.shared.startMonitoringLocation();
 > 1. Privacy - Location Always and When In Use Usage Description
 > 2. Privacy - Location Always Usage Description
 > 3. Privacy - Location When In Use Usage Description
+> Each of these keys must contain the message you wish to present to the user when location is requested.
 
 ## User identifier
 
