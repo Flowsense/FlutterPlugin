@@ -1,4 +1,4 @@
-//#import <UIKit/UIKit.h>
+#import <UIKit/UIKit.h>
 //#import <FlowsenseSDK/Service_fs.h>
 //#import <FlowsenseSDK/LocationTracker.h>
 //#import <FlowsenseSDK/BackgroundTaskManager.h>
