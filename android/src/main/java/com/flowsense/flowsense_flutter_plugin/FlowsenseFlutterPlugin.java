@@ -1,5 +1,9 @@
 package com.flowsense.flowsense_flutter_plugin;
 
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
+import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -25,6 +29,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.content.IntentFilter;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import android.os.Build;
 import android.content.pm.PackageManager;
@@ -41,19 +46,39 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 /** FlowsenseFlutterPlugin */
-public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks, PluginRegistry.RequestPermissionsResultListener {
+public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks, ActivityAware {
   /** Plugin registration. */
   private Registrar flutterRegistrar;
   private MethodChannel channel;
+  private Activity currentActivity = null;
 
   public static String RECEIVED_PUSH = "PUSH_RECEIVED";
   public static String CLICKED_PUSH = "PUSH_CLICKED";
 
   private static final int MY_PERMISSIONS_ACCESS_FINE_LOCATION = 122;
 
+  private Context applicationContext;
+  private Activity activity;
+
+//  private static void register(final FlowsenseFlutterPlugin plugin, BinaryMessenger messenger) {
+//    final MethodChannel channel =
+//        new MethodChannel(messenger, "FlowsenseSDK");
+//    final EventChannel eventChannel =
+//        new EventChannel(messenger, "FlowsenseSDK");
+//    channel.setMethodCallHandler(plugin);
+//    eventChannel.setStreamHandler(plugin);
+//  }
+
   public static void registerWith(Registrar registrar) {
     final MethodChannel methodChannel = new MethodChannel(registrar.messenger(), "FlowsenseSDK");
-    methodChannel.setMethodCallHandler(new FlowsenseFlutterPlugin(registrar.context(), methodChannel, registrar));
+    final FlowsenseFlutterPlugin plugin = new FlowsenseFlutterPlugin(registrar.context(), methodChannel, registrar);
+    methodChannel.setMethodCallHandler(plugin);
+
+    //register(plugin, registrar.messenger());
+    plugin.applicationContext = registrar.context();
+    plugin.activity = registrar.activity();
+
+    registrar.addRequestPermissionsResultListener(createAddRequestPermissionsResultListener(plugin));
   }
 
   public FlowsenseFlutterPlugin(Context context, MethodChannel methodChannel, Registrar registrar) {
@@ -225,12 +250,14 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (context.checkSelfPermission(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 try {
-                  ActivityCompat.requestPermissions(flutterRegistrar.activity(), new String[]{android.Manifest.permission.ACCESS_BACKGROUND_LOCATION, 
+                  ActivityCompat.requestPermissions(flutterRegistrar.activity(), new String[]{android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
                     android.Manifest.permission.ACCESS_FINE_LOCATION}, 
                     MY_PERMISSIONS_ACCESS_FINE_LOCATION);                  
                 } catch (Exception e) {
                     Log.e("FlowsenseSDK", e.getMessage());
                 }
+            }else{
+              FlowsenseSDK.startMonitoringLocation(context);
             }
         }
         else if (context.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -241,6 +268,8 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
             } catch (Exception e) {
                 Log.e("FlowsenseSDK", e.getMessage());
             }
+        } else{
+          FlowsenseSDK.startMonitoringLocation(context);
         }
     } else {
         FlowsenseSDK.startMonitoringLocation(context);
@@ -382,16 +411,42 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
     result.success(null);
   }
 
-  @Override
-  public boolean onRequestPermissionsResult(int requestCode, String[] strings, int[] ints) {
-    switch (requestCode) {
-      case MY_PERMISSIONS_ACCESS_FINE_LOCATION: {
-          // If request is cancelled, the result arrays are empty.
-          if (ints.length > 0 && ints[0] == PackageManager.PERMISSION_GRANTED) {
-              FlowsenseSDK.startMonitoringLocation(getApplicationContext());
+  private static PluginRegistry.RequestPermissionsResultListener createAddRequestPermissionsResultListener(final FlowsenseFlutterPlugin plugin) {
+    return new PluginRegistry.RequestPermissionsResultListener() {
+      @Override
+      public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+          Log.i("FlowsenseSDK", "onRequestPermissionsResult: " + requestCode + ", " + MY_PERMISSIONS_ACCESS_FINE_LOCATION + ", " + grantResults);
+          switch (requestCode) {
+              case MY_PERMISSIONS_ACCESS_FINE_LOCATION: {
+                  // If request is cancelled, the result arrays are empty.
+                  if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                      FlowsenseSDK.startMonitoringLocation(plugin.applicationContext);
+                  }
+              }
           }
+          return false;
       }
-    }
-    return false;
+    };
+  }
+
+  @Override
+  public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
+    activity = binding.getActivity();
+    binding.addRequestPermissionsResultListener(createAddRequestPermissionsResultListener(this));
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
+
+  }
+
+  @Override
+  public void onDetachedFromActivity() {
+
   }
 }

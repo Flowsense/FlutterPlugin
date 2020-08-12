@@ -45,7 +45,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
-    compile files('libs/FlowsenseSDK_4.0.4.4.aar')
+    compile files('libs/FlowsenseSDK_4.0.4.8.aar')
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.firebase:firebase-core:16.0.9'
@@ -53,9 +53,8 @@ dependencies {
     implementation 'androidx.core:core:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.amazonaws:aws-android-sdk-core:2.11.0'
-    implementation 'com.amazonaws:aws-android-sdk-kinesis:2.11.0'
-    implementation 'io.sentry:sentry-android:1.7.2'
+    implementation 'com.amazonaws:aws-android-sdk-core:2.16.0'
+    implementation 'com.amazonaws:aws-android-sdk-kinesis:2.16.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
