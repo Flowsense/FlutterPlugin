@@ -415,7 +415,6 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
     return new PluginRegistry.RequestPermissionsResultListener() {
       @Override
       public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-          Log.i("FlowsenseSDK", "onRequestPermissionsResult: " + requestCode + ", " + MY_PERMISSIONS_ACCESS_FINE_LOCATION + ", " + grantResults);
           switch (requestCode) {
               case MY_PERMISSIONS_ACCESS_FINE_LOCATION: {
                   // If request is cancelled, the result arrays are empty.
