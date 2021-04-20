@@ -45,7 +45,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.aar"])
-    compile files('libs/FlowsenseSDK_4.0.5.2.aar')
+    compile files('libs/FlowsenseSDK_5.0.0.5.aar')
     implementation 'com.scottyab:rootbeer-lib:0.0.8'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.android.gms:play-services-location:16.0.0'

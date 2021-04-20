@@ -51,15 +51,29 @@ NS_ASSUME_NONNULL_BEGIN
 +(void) requestWhenInUseLocationWithCallback:(void(^)(int status)) callback;
 +(void) requestAlwaysLocationWithCallback:(void(^)(int status)) callback;
 +(void) updatePartnerUserIdiOS:(NSString *) userId;
++(void) updateEmailiOS:(NSString *) userEmail;
++(void) updatePhoneNumberiOS:(NSString *) userPhoneNumber;
 +(void) requestPushToken;
 +(void) isRegisteredForPush;
 +(BOOL) isInsideHome;
 +(BOOL) isInsideWork;
 +(void) monitorApplicationActivity;
++(void) locationOptIn:(BOOL) optIn;
++(void) pushNotificationsEnabled:(BOOL) enabled;
++(void) smsEnabled:(BOOL) enabled;
++(void) emailEnabled:(BOOL) enabled;
++(void) createNotificationChannel:(NSString *)channelName;
 
 +(void) updateGeofences;
 +(NSArray *) getStoredGeofences;
 +(NSArray *) getKeyValues;
++(NSDate *) getSessionTime;
+
++(BOOL) isKeyBoardVisible;
+
+
+// Todo: remove
++(void) showInApp:(NSArray<NSMutableDictionary *> *) content;
 
 NS_ASSUME_NONNULL_END
 

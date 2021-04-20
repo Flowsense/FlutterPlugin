@@ -17,3 +17,11 @@
 ## 0.1.4
 
 * Minor corrections on native SDKs regarding user registration.
+
+## 1.0.0
+
+* Add In App Messages feature.
+
+## 1.0.1
+
+* Minor fixes on native SDKs regarding user registration.

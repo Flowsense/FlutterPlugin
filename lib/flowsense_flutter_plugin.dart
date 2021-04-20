@@ -36,6 +36,26 @@ class FlowsenseFlutterPlugin {
         'FlowsenseSDK#updatePartnerUserId', {'userID': userID});
   }
 
+  Future<void> pushNotificationsEnabled(bool enabled) async {
+    await _channel.invokeMethod(
+        'FlowsenseSDK#pushNotificationsEnabled', {'enabled': enabled});
+  }
+
+  Future<void> smsEnabled(bool enabled) async {
+    await _channel.invokeMethod(
+        'FlowsenseSDK#smsEnabled', {'enabled': enabled});
+  }
+
+  Future<void> emailEnabled(bool enabled) async {
+    await _channel.invokeMethod(
+        'FlowsenseSDK#emailEnabled', {'enabled': enabled});
+  }
+
+  Future<void> createNotificationChannel(String channelName) async {
+    await _channel.invokeMethod(
+        'FlowsenseSDK#createNotificationChannel', {'channelName': channelName});
+  }
+
   Future<void> setKeyValue(Map<String, dynamic> keyValues) async {
     Map<String, dynamic> keyValueMap = new Map<String, dynamic>();
     keyValues.forEach((k, v) {
