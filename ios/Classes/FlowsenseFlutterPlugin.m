@@ -98,6 +98,16 @@ static NSDictionary* launchOptions = nil;
         [self inAppEvent:call withResult:result];
     } else if ([@"FlowsenseSDK#requestPushToken" isEqualToString:call.method]) {
         [self requestPushToken];
+    } else if ([@"FlowsenseSDK#pushNotificationsEnabled" isEqualToString:call.method]) {
+        [self pushNotificationsEnabled withResult:result];
+    } else if ([@"FlowsenseSDK#smsEnabled" isEqualToString:call.method]) {
+        [self smsEnabled withResult:result];
+    } else if ([@"FlowsenseSDK#emailEnabled" isEqualToString:call.method]) {
+        [self emailEnabled withResult:result];
+    } else if ([@"FlowsenseSDK#createNotificationChannel" isEqualToString:call.method]) {
+        [self createNotificationChannel withResult:result];
+    } else if ([@"FlowsenseSDK#enableCommChannel" isEqualToString:call.method]) {
+        [self enableCommChannel withResult:result];
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -184,6 +194,31 @@ static NSDictionary* launchOptions = nil;
 
 - (void)startMonitoringLocation {
     [Service_fs StartMonitoringLocation];
+}
+
+- (void)pushNotificationsEnabled:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [Service_fs pushNotificationsEnabled:[call.arguments[@"enabled"] boolValue]];
+    result(@[]);
+}
+
+- (void)smsEnabled:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [Service_fs smsEnabled:[call.arguments[@"enabled"] boolValue]];
+    result(@[]);
+}
+
+- (void)emailEnabled:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [Service_fs emailEnabled:[call.arguments[@"enabled"] boolValue]];
+    result(@[]);
+}
+
+- (void)createNotificationChannel:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [Service_fs createNotificationChannel:call.arguments[@"channelName"]];
+    result(@[]);
+}
+
+- (void)enableCommChannel:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [Service_fs enableCommChannel:call.arguments[@"channelName"] enabled:[call.arguments[@"enabled"] boolValue]];
+    result(@[]);
 }
 
 @end

@@ -114,6 +114,16 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
       sendMessageToFlowsense(call, result);
     } else if (call.method.equals("FlowsenseSDK#inAppEvent")) {
       inAppEvent(call, result);
+    } else if (call.method.equals("FlowsenseSDK#pushNotificationsEnabled")) {
+      pushNotificationsEnabled(call, result);
+    } else if (call.method.equals("FlowsenseSDK#smsEnabled")) {
+      smsEnabled(call, result);
+    } else if (call.method.equals("FlowsenseSDK#emailEnabled")) {
+      emailEnabled(call, result);
+    } else if (call.method.equals("FlowsenseSDK#createNotificationChannel")) {
+      createNotificationChannel(call, result);
+    } else if (call.method.equals("FlowsenseSDK#enableCommChannel")) {
+      enableCommChannel(call, result);
     } else {
       result.notImplemented();
     }
@@ -233,6 +243,37 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
   private void startFlowsenseService(MethodCall call, Result result) {
     String token = call.argument("authToken");
     FlowsenseSDK.init(token, getApplicationContext());
+    result.success(null);
+  }
+
+  private void pushNotificationsEnabled(MethodCall call, Result result) {
+    boolean enable = call.argument("enable");
+    FlowsenseSDK.pushNotificationsEnabled(getApplicationContext(), enable);
+    result.success(null);
+  }
+
+  private void smsEnabled(MethodCall call, Result result) {
+    boolean enable = call.argument("enable");
+    FlowsenseSDK.smsEnabled(getApplicationContext(), enable);
+    result.success(null);
+  }
+
+  private void emailEnabled(MethodCall call, Result result) {
+    boolean enable = call.argument("enable");
+    FlowsenseSDK.emailEnabled(getApplicationContext(), enable);
+    result.success(null);
+  }
+
+  private void createNotificationChannel(MethodCall call, Result result) {
+    String channelName = call.argument("channelName");
+    FlowsenseSDK.createNotificationChannel(getApplicationContext(), channelName);
+    result.success(null);
+  }
+
+  private void enableCommChannel(MethodCall call, Result result) {
+    String channelName = call.argument("channelName");
+    boolean enable = call.argument("enable");
+    FlowsenseSDK.enableCommChannel(getApplicationContext(), channelName, enable);
     result.success(null);
   }
 

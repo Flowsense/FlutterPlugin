@@ -25,3 +25,7 @@
 ## 1.0.1
 
 * Minor fixes on native SDKs regarding user registration.
+
+## 1.0.2
+
+* Minor improvements on the Geofence and In App Message features.

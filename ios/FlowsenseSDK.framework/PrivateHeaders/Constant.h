@@ -6,6 +6,8 @@ extern NSString *const ApiInAppCSF;
 extern NSString *const ApiInAppCSFHomolog;
 extern NSString *const LAST_UPDATED_IN_APP_MESSAGES;
 extern NSString *const IN_APP_MESSAGES_UPDATE_FREQUENCY;
+extern NSString *const LAST_UPDATED_GEOFENCE;
+extern NSString *const GEOFENCE_UPDATE_FREQUENCY;
 extern NSString *const FLOWSENSE_PUSH_ENABLED;
 extern NSString *const FLOWSENSE_SMS_ENABLED;
 extern NSString *const FLOWSENSE_EMAIL_ENABLED;
