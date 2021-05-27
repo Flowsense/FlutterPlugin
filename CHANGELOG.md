@@ -29,3 +29,7 @@
 ## 1.0.2
 
 * Minor improvements on the Geofence and In App Message features.
+
+## 1.0.3
+
+* Updated Android SDK repository and fix In App Message actions.

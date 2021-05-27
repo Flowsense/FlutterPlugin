@@ -17,10 +17,8 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
-	flatDir {
-            dirs 'libs'
-    	}
-    }
+        mavenCentral()
+	
 }
 
 apply plugin: 'com.android.library'
@@ -44,18 +42,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.aar"])
-    compile files('libs/FlowsenseSDK_5.0.0.6.aar')
-    implementation 'com.scottyab:rootbeer-lib:0.0.8'
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
-    implementation 'com.google.firebase:firebase-core:16.0.9'
-    implementation 'com.google.firebase:firebase-messaging:18.0.0'
-    implementation 'androidx.core:core:1.0.0'
-    implementation 'androidx.preference:preference:1.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.amazonaws:aws-android-sdk-core:2.16.0'
-    implementation 'com.amazonaws:aws-android-sdk-kinesis:2.16.0'
+    implementation 'br.com.flowsense:sdk:5.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
