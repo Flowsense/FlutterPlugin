@@ -33,3 +33,7 @@
 ## 1.0.3
 
 * Updated Android SDK repository and fix In App Message actions.
+
+## 1.0.4
+
+* Minor fixes on request location in iOS.
