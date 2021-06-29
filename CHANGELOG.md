@@ -37,3 +37,7 @@
 ## 1.0.4
 
 * Minor fixes on request location in iOS.
+
+## 1.0.5
+
+* Minor fixes regarding Android plugin.
