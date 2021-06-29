@@ -122,8 +122,6 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
       emailEnabled(call, result);
     } else if (call.method.equals("FlowsenseSDK#createNotificationChannel")) {
       createNotificationChannel(call, result);
-    } else if (call.method.equals("FlowsenseSDK#enableCommChannel")) {
-      enableCommChannel(call, result);
     } else {
       result.notImplemented();
     }
@@ -267,13 +265,6 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
   private void createNotificationChannel(MethodCall call, Result result) {
     String channelName = call.argument("channelName");
     FlowsenseSDK.createNotificationChannel(getApplicationContext(), channelName);
-    result.success(null);
-  }
-
-  private void enableCommChannel(MethodCall call, Result result) {
-    String channelName = call.argument("channelName");
-    boolean enable = call.argument("enable");
-    FlowsenseSDK.enableCommChannel(getApplicationContext(), channelName, enable);
     result.success(null);
   }
 

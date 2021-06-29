@@ -56,11 +56,6 @@ class FlowsenseFlutterPlugin {
         'FlowsenseSDK#createNotificationChannel', {'channelName': channelName});
   }
 
-  Future<void> enableCommChannel(String channelName, bool enabled) async {
-    await _channel.invokeMethod(
-        'FlowsenseSDK#enableCommChannel', {'channelName': channelName, 'enabled': enabled});
-  }
-
   Future<void> setKeyValue(Map<String, dynamic> keyValues) async {
     Map<String, dynamic> keyValueMap = new Map<String, dynamic>();
     keyValues.forEach((k, v) {
