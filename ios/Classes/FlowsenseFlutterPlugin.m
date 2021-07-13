@@ -99,15 +99,15 @@ static NSDictionary* launchOptions = nil;
     } else if ([@"FlowsenseSDK#requestPushToken" isEqualToString:call.method]) {
         [self requestPushToken];
     } else if ([@"FlowsenseSDK#pushNotificationsEnabled" isEqualToString:call.method]) {
-        [self pushNotificationsEnabled withResult:result];
+        [self pushNotificationsEnabled:call withResult:result];
     } else if ([@"FlowsenseSDK#smsEnabled" isEqualToString:call.method]) {
-        [self smsEnabled withResult:result];
+        [self smsEnabled:call withResult:result];
     } else if ([@"FlowsenseSDK#emailEnabled" isEqualToString:call.method]) {
-        [self emailEnabled withResult:result];
+        [self emailEnabled:call withResult:result];
     } else if ([@"FlowsenseSDK#createNotificationChannel" isEqualToString:call.method]) {
-        [self createNotificationChannel withResult:result];
+        [self createNotificationChannel:call withResult:result];
     } else if ([@"FlowsenseSDK#enableCommChannel" isEqualToString:call.method]) {
-        [self enableCommChannel withResult:result];
+        [self enableCommChannel:call withResult:result];
     } else {
         result(FlutterMethodNotImplemented);
     }

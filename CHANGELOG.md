@@ -41,3 +41,11 @@
 ## 1.0.5
 
 * Minor fixes regarding Android plugin.
+
+## 1.0.6
+
+* Minor fixes regarding Android plugin.
+
+## 1.0.7
+
+* Minor fix regarding iOS plugin.
