@@ -106,8 +106,6 @@ static NSDictionary* launchOptions = nil;
         [self emailEnabled:call withResult:result];
     } else if ([@"FlowsenseSDK#createNotificationChannel" isEqualToString:call.method]) {
         [self createNotificationChannel:call withResult:result];
-    } else if ([@"FlowsenseSDK#enableCommChannel" isEqualToString:call.method]) {
-        [self enableCommChannel:call withResult:result];
     } else {
         result(FlutterMethodNotImplemented);
     }
@@ -213,11 +211,6 @@ static NSDictionary* launchOptions = nil;
 
 - (void)createNotificationChannel:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [Service_fs createNotificationChannel:call.arguments[@"channelName"]];
-    result(@[]);
-}
-
-- (void)enableCommChannel:(FlutterMethodCall *)call withResult:(FlutterResult)result {
-    [Service_fs enableCommChannel:call.arguments[@"channelName"] enabled:[call.arguments[@"enabled"] boolValue]];
     result(@[]);
 }
 
