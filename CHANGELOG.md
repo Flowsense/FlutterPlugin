@@ -53,3 +53,7 @@
 ## 1.0.8
 
 * Minor fix regarding iOS plugin.
+
+## 1.0.9
+
+* Fix Firebase settings.
