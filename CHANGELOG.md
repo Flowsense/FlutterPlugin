@@ -61,3 +61,7 @@
 ## 1.0.10
 
 * Fix Firebase Messaging init on Android.
+
+## 1.0.11
+
+* Fix Get Instant Location on Android.
