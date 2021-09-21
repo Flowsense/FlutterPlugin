@@ -106,6 +106,10 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
       startMonitoringLocation();
     } else if (call.method.equals("FlowsenseSDK#updatePartnerUserId")) {
       updatePartnerUserId(call, result);
+    } else if (call.method.equals("FlowsenseSDK#updateEmail")) {
+      updateEmail(call, result);
+    } else if (call.method.equals("FlowsenseSDK#updatePhoneNumber")) {
+      updatePhoneNumber(call, result);
     } else if (call.method.equals("FlowsenseSDK#setKeyValue")) {
       setKeyValue(call, result);
     } else if (call.method.equals("FlowsenseSDK#commitChanges")) {
@@ -311,6 +315,18 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
   private void updatePartnerUserId(MethodCall call, Result result) {
     String userID = call.argument("userID");
     FlowsenseSDK.updatePartnerUserId(userID, getApplicationContext());
+    result.success(null);
+  }
+
+  private void updateEmail(MethodCall call, Result result) {
+    String email = call.argument("email");
+    FlowsenseSDK.updateEmail(email, getApplicationContext());
+    result.success(null);
+  }
+
+  private void updatePhoneNumber(MethodCall call, Result result) {
+    String phoneNumber = call.argument("phoneNumber");
+    FlowsenseSDK.updatePhoneNumber(phoneNumber, getApplicationContext());
     result.success(null);
   }
 

@@ -36,6 +36,16 @@ class FlowsenseFlutterPlugin {
         'FlowsenseSDK#updatePartnerUserId', {'userID': userID});
   }
 
+  Future<void> updatePhoneNumber(String phoneNumber) async {
+    await _channel.invokeMethod(
+        'FlowsenseSDK#updatePhoneNumber', {'phoneNumber': phoneNumber});
+  }
+
+  Future<void> updateEmail(String email) async {
+    await _channel.invokeMethod(
+        'FlowsenseSDK#updateEmail', {'email': email});
+  }
+
   Future<void> pushNotificationsEnabled(bool enabled) async {
     await _channel.invokeMethod(
         'FlowsenseSDK#pushNotificationsEnabled', {'enabled': enabled});
