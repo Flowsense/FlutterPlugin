@@ -90,6 +90,10 @@ static NSDictionary* launchOptions = nil;
         [self startMonitoringLocation];
     } else if ([@"FlowsenseSDK#updatePartnerUserId" isEqualToString:call.method]) {
         [self updatePartnerUserId:call withResult:result];
+    } else if ([@"FlowsenseSDK#updatePhoneNumber" isEqualToString:call.method]) {
+        [self updatePhoneNumber:call withResult:result];
+    } else if ([@"FlowsenseSDK#updateEmail" isEqualToString:call.method]) {
+        [self updateEmail:call withResult:result];
     } else if ([@"FlowsenseSDK#setKeyValue" isEqualToString:call.method]) {
         [self setKeyValue:call withResult:result];
     } else if ([@"FlowsenseSDK#commitChanges" isEqualToString:call.method]) {
@@ -118,6 +122,16 @@ static NSDictionary* launchOptions = nil;
 
 - (void)updatePartnerUserId:(FlutterMethodCall *)call withResult:(FlutterResult)result {
     [Service_fs updatePartnerUserIdiOS:call.arguments[@"userID"]];
+    result(@[]);
+}
+
+- (void)updateEmail:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [Service_fs updateEmailiOS:call.arguments[@"email"]];
+    result(@[]);
+}
+
+- (void)updatePhoneNumber:(FlutterMethodCall *)call withResult:(FlutterResult)result {
+    [Service_fs updatePhoneNumberiOS:call.arguments[@"phoneNumber"]];
     result(@[]);
 }
 

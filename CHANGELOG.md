@@ -65,3 +65,7 @@
 ## 1.0.11
 
 * Fix Get Instant Location on Android.
+
+<!-- ## 1.1.0
+
+* Adds support for E-Mail and SMS. -->
