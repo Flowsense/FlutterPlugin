@@ -69,3 +69,7 @@
 ## 1.1.0
 
 * Adds support for E-Mail and SMS.
+
+## 1.1.1
+
+* Small fixes for In App Messages.

@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
-//#import <FlowsenseSDK/Service_fs.h>
-//#import <FlowsenseSDK/LocationTracker.h>
-//#import <FlowsenseSDK/BackgroundTaskManager.h>
-//#import <FlowsenseSDK/LocationShareModel.h>
+#import <FlowsenseSDK/Service_fs.h>
+#import <FlowsenseSDK/InAppEvents.h>
+#import <FlowsenseSDK/Cordova.h>
+#import <FlowsenseSDK/KeyValuesManager.h>
 
 //! Project version number for SDK.
 FOUNDATION_EXPORT double SDKVersionNumber;
