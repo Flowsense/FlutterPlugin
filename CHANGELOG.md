@@ -73,3 +73,7 @@
 ## 1.1.1
 
 * Small fixes for In App Messages.
+
+## 1.1.2
+
+* Adds Location Services enabled check.

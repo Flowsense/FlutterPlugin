@@ -42,7 +42,7 @@ android {
 }
 
 dependencies {
-    api 'br.com.flowsense:sdk:5.0.3'
+    api 'br.com.flowsense:sdk:5.0.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
