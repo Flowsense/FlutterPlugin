@@ -14,10 +14,10 @@ class FlowsenseFlutterPlugin {
 
   MethodChannel _channel = const MethodChannel('FlowsenseSDK');
 
-  FlowsenseReceivedNotif _receivedNotification;
-  FlowsenseClickedNotif _clickedNotification;
-  FlowsensePushToken _pushToken;
-  FlowsensePushPermission _pushPermission;
+  FlowsenseReceivedNotif? _receivedNotification;
+  FlowsenseClickedNotif? _clickedNotification;
+  FlowsensePushToken? _pushToken;
+  FlowsensePushPermission? _pushPermission;
 
   FlowsenseFlutterPlugin() {
     this._channel.setMethodCallHandler(_handleMethod);
@@ -142,16 +142,16 @@ class FlowsenseFlutterPlugin {
   Future<Null> _handleMethod(MethodCall call) async {
     if (call.method == 'FlowsenseSDK#receivedNotification' &&
         this._receivedNotification != null) {
-      this._receivedNotification(call.arguments);
+      this._receivedNotification!(call.arguments);
     } else if (call.method == 'FlowsenseSDK#clickedNotification' &&
         this._clickedNotification != null) {
-      this._clickedNotification(call.arguments);
+      this._clickedNotification!(call.arguments);
     } else if (call.method == 'FlowsenseSDK#pushToken' &&
         this._pushToken != null) {
-          this._pushToken(call.arguments);
+          this._pushToken!(call.arguments);
     } else if (call.method == 'FlowsenseSDK#pushPermission' &&
         this._pushPermission != null) {
-          this._pushPermission(call.arguments);
+          this._pushPermission!(call.arguments);
     }
 
     return null;
