@@ -77,3 +77,7 @@
 ## 1.1.2
 
 * Adds Location Services enabled check.
+
+## 2.0.0
+
+* Support for null safety and v2 embedding for Android.

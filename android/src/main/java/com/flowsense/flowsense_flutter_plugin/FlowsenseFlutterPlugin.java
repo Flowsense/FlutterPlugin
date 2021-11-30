@@ -1,5 +1,6 @@
 package com.flowsense.flowsense_flutter_plugin;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
@@ -9,7 +10,6 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 import com.flowsense.flowsensesdk.PushNotification.FlowsensePushService;
 import com.flowsense.flowsensesdk.PushNotification.FlowsenseNotification;
@@ -46,9 +46,9 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 /** FlowsenseFlutterPlugin */
-public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks, ActivityAware {
+public class FlowsenseFlutterPlugin implements FlutterPlugin, MethodCallHandler, PushCallbacks, ActivityAware {
   /** Plugin registration. */
-  private Registrar flutterRegistrar;
+  private FlutterPluginBinding flutterRegistrar;
   private MethodChannel channel;
   private Activity currentActivity = null;
 
@@ -60,39 +60,47 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
   private Context applicationContext;
   private Activity activity;
 
-//  private static void register(final FlowsenseFlutterPlugin plugin, BinaryMessenger messenger) {
-//    final MethodChannel channel =
-//        new MethodChannel(messenger, "FlowsenseSDK");
-//    final EventChannel eventChannel =
-//        new EventChannel(messenger, "FlowsenseSDK");
-//    channel.setMethodCallHandler(plugin);
-//    eventChannel.setStreamHandler(plugin);
+  @Override
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+      channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "FlowsenseSDK");
+      channel.setMethodCallHandler(this);
+
+      flutterRegistrar = flutterPluginBinding;
+      try {
+        MonitorAppUsage.getInstance((Application) flutterPluginBinding.getApplicationContext());
+      } catch (Exception e) {
+          e.printStackTrace();
+          Log.e("FlowsenseSDK", e.toString());
+      }
+
+      //plugin.applicationContext = flutterPluginBinding.getApplicationContext();
+      //plugin.activity = flutterPluginBinding.activity();
+
+      //flutterPluginBinding.addRequestPermissionsResultListener(createAddRequestPermissionsResultListener(plugin));
+  }
+
+//  public static void registerWith(Registrar registrar) {
+//    final MethodChannel methodChannel = new MethodChannel(registrar.messenger(), "FlowsenseSDK");
+//    final FlowsenseFlutterPlugin plugin = new FlowsenseFlutterPlugin(registrar.context(), methodChannel, registrar);
+//    methodChannel.setMethodCallHandler(plugin);
+//
+//    plugin.applicationContext = registrar.context();
+//    plugin.activity = registrar.activity();
+//
+//    registrar.addRequestPermissionsResultListener(createAddRequestPermissionsResultListener(plugin));
 //  }
 
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel methodChannel = new MethodChannel(registrar.messenger(), "FlowsenseSDK");
-    final FlowsenseFlutterPlugin plugin = new FlowsenseFlutterPlugin(registrar.context(), methodChannel, registrar);
-    methodChannel.setMethodCallHandler(plugin);
-
-    //register(plugin, registrar.messenger());
-    plugin.applicationContext = registrar.context();
-    plugin.activity = registrar.activity();
-
-    registrar.addRequestPermissionsResultListener(createAddRequestPermissionsResultListener(plugin));
-  }
-
-  public FlowsenseFlutterPlugin(Context context, MethodChannel methodChannel, Registrar registrar) {
-    this.flutterRegistrar = registrar;
-    this.channel = methodChannel;
-    this.channel.setMethodCallHandler(this);
-    try {
-      MonitorAppUsage.getInstance(
-              (Application) context.getApplicationContext());
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e("FlowsenseSDK", e.toString());
-    }
-  }
+  // public FlowsenseFlutterPlugin(Context context, MethodChannel methodChannel, FlutterPluginBinding flutterPluginBinding) {
+  //   this.flutterRegistrar = flutterPluginBinding;
+  //   this.channel = methodChannel;
+  //   this.channel.setMethodCallHandler(this);
+  //   try {
+  //     MonitorAppUsage.getInstance((Application) context.getApplicationContext());
+  //   } catch (Exception e) {
+  //       e.printStackTrace();
+  //       Log.e("FlowsenseSDK", e.toString());
+  //   }
+  // }
   
   @Override
   public void onMethodCall(MethodCall call, Result result) {
@@ -132,7 +140,7 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
   }
 
   private Context getApplicationContext() {
-    return flutterRegistrar.activeContext();
+    return flutterRegistrar.getApplicationContext();
   }
 
   private void startFlowsense(){
@@ -280,13 +288,14 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
     this.requestAuthAndStartLocation();
   }
 
+  //registrar
   private void requestAuthAndStartLocation(){
     Context context = getApplicationContext();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (context.checkSelfPermission(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 try {
-                  ActivityCompat.requestPermissions(flutterRegistrar.activity(), new String[]{android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                  ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
                     android.Manifest.permission.ACCESS_FINE_LOCATION}, 
                     MY_PERMISSIONS_ACCESS_FINE_LOCATION);                  
                 } catch (Exception e) {
@@ -299,7 +308,7 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
         else if (context.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {            
             try {
-              ActivityCompat.requestPermissions(flutterRegistrar.activity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 
+              ActivityCompat.requestPermissions(activity, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 
                 MY_PERMISSIONS_ACCESS_FINE_LOCATION);
             } catch (Exception e) {
                 Log.e("FlowsenseSDK", e.getMessage());
@@ -363,7 +372,7 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
   }
 
   private static HashMap<String, Object> jsonToWritableMap(JSONObject jsonObject) {
-      HashMap<String, Object> writableMap = new HashMap();
+      HashMap<String, Object> writableMap = new HashMap<String, Object>();
 
       if (jsonObject == null) {
           return null;
@@ -414,7 +423,7 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
   }
 
   private static Map<String, String> toMap(HashMap readableMap, boolean recursion) {
-    Map<String, String> map = new HashMap<>();
+    Map<String, String> map = new HashMap<String, String>();
 
     for (Object keyObj : readableMap.keySet()) {
         String key = keyObj.toString();
@@ -441,7 +450,7 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
     String eventName = call.argument("eventName");
     try {
       HashMap<String, Object> eventMap = call.argument("eventMap");
-      HashMap<String, Object> eMap = new HashMap();
+      HashMap<String, Object> eMap = new HashMap<String, Object>();
       for (String key : eventMap.keySet()) {
         if (key.contains("FSDate_")) {
           Object value = eventMap.get(key);
@@ -459,6 +468,7 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
     result.success(null);
   }
 
+  //registrar
   private static PluginRegistry.RequestPermissionsResultListener createAddRequestPermissionsResultListener(final FlowsenseFlutterPlugin plugin) {
     return new PluginRegistry.RequestPermissionsResultListener() {
       @Override
@@ -467,7 +477,7 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
               case MY_PERMISSIONS_ACCESS_FINE_LOCATION: {
                   // If request is cancelled, the result arrays are empty.
                   if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                      FlowsenseSDK.startMonitoringLocation(plugin.applicationContext);
+                      FlowsenseSDK.startMonitoringLocation(plugin.flutterRegistrar.getApplicationContext());
                   }
               }
           }
@@ -480,20 +490,23 @@ public class FlowsenseFlutterPlugin implements MethodCallHandler, PushCallbacks,
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     activity = binding.getActivity();
     binding.addRequestPermissionsResultListener(createAddRequestPermissionsResultListener(this));
+    
   }
 
   @Override
   public void onDetachedFromActivityForConfigChanges() {
-
   }
 
   @Override
   public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
-
   }
 
   @Override
   public void onDetachedFromActivity() {
+  }
 
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    channel.setMethodCallHandler(null);
   }
 }

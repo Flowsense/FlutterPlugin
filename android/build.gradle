@@ -19,6 +19,12 @@ rootProject.allprojects {
         jcenter()
         mavenCentral()
     }
+
+    gradle.projectsEvaluated{
+        tasks.withType(JavaCompile){
+            options.compilerArgs << "-Xlint:unchecked"
+        }
+    }
 }
 
 apply plugin: 'com.android.library'
@@ -42,7 +48,7 @@ android {
 }
 
 dependencies {
-    api 'br.com.flowsense:sdk:5.0.4'
+    api 'br.com.flowsense:sdk:5.0.5'
 }
 
 apply plugin: 'com.google.gms.google-services'
