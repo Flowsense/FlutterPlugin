@@ -81,3 +81,7 @@
 ## 2.0.0
 
 * Support for null safety and v2 embedding for Android.
+
+## 2.1.0
+
+* Updated iOS Native SDK with bug fixes.
